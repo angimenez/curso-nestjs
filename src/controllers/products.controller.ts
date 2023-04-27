@@ -10,9 +10,12 @@ import {
   HttpCode,
   HttpStatus,
   Res,
+  // ParseIntPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ProductsService } from 'src/services/products.service';
+import { ParseIntPipe } from '../common/parse-int/parse-int.pipe';
+import { CreateProductDto, UpdateProductDto } from './../dtos/products.dtos';
 
 @Controller('products')
 export class ProductsController {
@@ -37,13 +40,19 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() payload: any) {
+  create(@Body() payload: CreateProductDto /* <- Dto */) {
     return this.productsService.create(payload);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-  getOne(@Param('id') id: string) {
+  getOne(
+    @Param(
+      'id',
+      ParseIntPipe /* Importante esto del pipe para validar el dato sea del tipo que preciso */,
+    )
+    id: number,
+  ) {
     return this.productsService.findOne(+id);
   }
 
@@ -51,7 +60,7 @@ export class ProductsController {
   update(
     @Res() response: Response,
     @Param('id') id: string,
-    @Body() payload: any,
+    @Body() payload: UpdateProductDto,
   ) {
     // Esto si precisamos acceder de la forma en que se hace en express
     response.status(200).send(this.productsService.update(+id, payload));
