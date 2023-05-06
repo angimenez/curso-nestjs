@@ -44,7 +44,16 @@ export class UsersController {
     )
     id: number,
   ) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
+  }
+
+  @Get(':id/orders')
+  @HttpCode(HttpStatus.ACCEPTED)
+  getOrders(
+    @Param('id', ParseIntPipe)
+    id: number,
+  ) {
+    return this.usersService.getOrdersByUser(id);
   }
 
   @Put(':id')

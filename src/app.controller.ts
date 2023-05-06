@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
 
 /**
@@ -8,11 +8,16 @@ import { AppService } from './app.service';
  */
 @Controller() // Los @decorators indican cosas
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    @Inject('API_KEY') private apiKey: string,
+    @Inject('TASKS') private tasks: any[],
+  ) {}
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    console.log(this.tasks);
+    return this.appService.getHello() + this.apiKey;
   }
 
   @Get('kiki')

@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto, UpdateOrderDto } from '../dtos/orders.dto';
 import { Order } from '../entities/order.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class OrdersService {
@@ -8,7 +9,9 @@ export class OrdersService {
   private orders: Order[] = [
     {
       id: 1,
-      name: 'Order 1',
+      date: new Date(),
+      products: [],
+      user: new User(),
     },
   ];
 
@@ -29,7 +32,7 @@ export class OrdersService {
       id: this.autoincrement,
       ...payload,
     };
-    this.orders.push(newOrder);
+    //this.orders.push(newOrder);
     return newOrder;
   }
 
