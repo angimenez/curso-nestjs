@@ -33,3 +33,8 @@ En main.ts agregar la siguiente línea antes del app.listen:
   <code>app.useGlobalPipes(new ValidationPipe());</code>
 
 
+## Creando módulos
+
+Los módulos es una forma de agrupar lógica y simplificar la arquitectura de nuestra aplicación.
+Para crear un módulo es necesario usar el siguiente comando:
+<code>nest g mo nombre_modulo</code>

@@ -13,13 +13,13 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ParseIntPipe } from 'src/common/parse-int/parse-int.pipe';
-import { CreateBrandDto, UpdateBrandDto } from 'src/dtos/brands.dto';
-import { BrandsService } from 'src/services/brands.service';
+import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto';
+import { UsersService } from '../services/users.service';
 
-@Controller('brands')
-export class BrandsController {
+@Controller('users')
+export class UsersController {
   // El service se inyecta en el controlador para ser utilizado
-  constructor(private readonly brandsService: BrandsService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Get()
   get(
@@ -27,12 +27,12 @@ export class BrandsController {
     @Query('offset') offset: number,
     @Query('brand') brand: string,
   ) {
-    return this.brandsService.findAll();
+    return this.usersService.findAll();
   }
 
   @Post()
-  create(@Body() payload: CreateBrandDto /* <- Dto */) {
-    return this.brandsService.create(payload);
+  create(@Body() payload: CreateUserDto /* <- Dto */) {
+    return this.usersService.create(payload);
   }
 
   @Get(':id')
@@ -44,21 +44,21 @@ export class BrandsController {
     )
     id: number,
   ) {
-    return this.brandsService.findOne(+id);
+    return this.usersService.findOne(+id);
   }
 
   @Put(':id')
   update(
     @Res() response: Response,
     @Param('id') id: string,
-    @Body() payload: UpdateBrandDto,
+    @Body() payload: UpdateUserDto,
   ) {
     // Esto si precisamos acceder de la forma en que se hace en express
-    response.status(200).send(this.brandsService.update(+id, payload));
+    response.status(200).send(this.usersService.update(+id, payload));
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.brandsService.delete(+id);
+    return this.usersService.delete(+id);
   }
 }
