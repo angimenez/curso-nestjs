@@ -229,3 +229,16 @@ EL paquete de sagger para nest nos trae decoradores que nos permiten mejorar las
 También en los controladores tenemos para agupar endpoints con (por ejemplo en products.controller):
 @ApiTags('products')
 Con el decorador @ApiOperation({ summary: 'Description' }) podemos documentar métodos en específico.
+
+## Habilitar cors para no tener problemas
+
+En main.ts debo agregar una línea antes del app.listen que sea:
+app.enableCors();
+
+## Configurar para que ande en Heroku
+
+En el package.json agrego un item que es "engines", el mismo indica qué versión se corre en el proyecto.
+En el siguiente paso agregamos un archivo Procfile para que le indique con qué comando correr nuestro server
+
+// Agregamos el process.... para que si mandamos a Heroku (u otra) pueda iniciar con el puerto que nos dan
+await app.listen(process.env.PORT || 3000);

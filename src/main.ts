@@ -27,6 +27,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(3000);
+  // hab ilitar cors para consumir desde cualquier punto.
+  app.enableCors();
+
+  // Agregamos el process.... para que si mandamos a Heroku (u otra) pueda iniciar con el puerto que nos dan
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
