@@ -114,3 +114,88 @@ ES útil para realizar peticiones asíncronas (como esperar a conectar con la ba
 
 Son buenos para que podamos exportar providers a todos los módulos sin necesidad de importarlos expresamente, y de esa manera podemos inyectar sus providers en otros módulos. Recordar utilizar el decorator @Global()
 También sirve para exportar los servicios que se repiten en varios módulos, por ejemplo si en productos llamamos cosas de usuarios y en usuarios llamamos cosas de productos, vamos a generar una dependencia circular y vamos a tener líos, entonces lo mejor es meter esos servicios en un módulo global y listo.
+
+## COnfig Service
+
+Para hacer uso de archivos .env y que sea más fácil configurar nuestros entornos de ejecución en NestJS, podemos usar los configService que por debajo utiliza dotenv.
+IMPORTANTE AGREGAR AL .gitignore el .env file
+Para utilizarlo lo instalamos con el siguiente comando:
+
+    npm install @nestjs/config
+
+Para inyectar la configuración del .env debemos escribir el sieugiente código en app.module (en la parte de los imports de módulos):
+
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal:
+        true /* Para que los valores del archivo de configuración sean globales */,
+    }),
+
+De esta manera se carga en un ConfigService lo que está en el .env. Para poder hacer uso de las configuraciones dentro de nuestros servicios debemos inyectorlo de la siguiente manera:
+constructor(private configService: ConfigService) {}
+
+Para traer cualquier configuración luego es simplemente:
+
+    this.configService.get('VAR_CONF_EJEMPLO')
+
+## Tipado del config service
+
+Un problema de la implementación anterior, es que debemos recordar exactamente cada atributo del .env cómo se escribe exactamente para poder trabajar bien. Para tener un "tipado" y evitar esto, hay que hacer lo siguiente:
+
+Creamos un archivo config.ts con el siguiente código (allí se agrupan las variables):
+
+import { registerAs } from '@nestjs/config';
+
+export default registerAs('config', () => ({
+database: {
+host: process.env.DATABASE_HOST,
+},
+apiKey: process.env.API_KEY,
+}));
+
+Luego hacemos lo siguiente app.module:
+ConfigModule.forRoot({
+/_ Con esto podemos configurar diferentes ambientes de trabajo _/
+envFilePath: environments[process.env.NODE_ENV] || '.env',
+load: [
+config,
+] /_ Para que nuestras variables de entornos tengan tipado seguro_/,
+isGlobal:
+true /_ Para que los valores del archivo de configuración sean globales _/,
+}),
+
+Luego en donde haremos uso de las variables, debemos importar e inyectar dependencias:
+
+import { ConfigType } from '@nestjs/config';
+import config from './config';
+
+...
+constructor(
+@Inject(config.KEY) private configService: ConfigType<typeof config>,
+) {}
+...
+
+## Joi (validación de esquemas .envs)
+
+Se instala con el siguiente comando:
+npm install joi
+Con joi validamos que el archivo .env tenga todo lo que necesitamos. Para usarlo se importa de la siguiente manera y se usa el siguiente código:
+...
+import _ as Joi from 'joi';
+...
+ConfigModule.forRoot({
+/_ Con esto podemos configurar diferentes ambientes de trabajo _/
+envFilePath: environments[process.env.NODE_ENV] || '.env',
+load: [
+config,
+] /_ Para que nuestras variables de entornos tengan tipado seguro*/,
+isGlobal:
+true /* Para que los valores del archivo de configuración sean globales _/,
+validationSchema: Joi.object({
+API_KEY: Joi.string().required(),
+DATABASE_HOST: Joi.string().required(),
+DATABASE_PORT: Joi.number().required(),
+}) /_ Con joi validamos que el archivo .env tenga todo lo que necesitamos \*/,
+}),
+...
+

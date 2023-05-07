@@ -1,16 +1,40 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 
+import { environments } from './environments';
+import config from './config';
+
+// ESTO DE ABAJO ES DEPRECADO PORQUE USAMOS .env
 const API_KEY = 'KAKAKAKAK';
 const API_KEY_PROD = 'KAKAKA FOR PRODUCTION';
 
 @Module({
-  imports: [ProductsModule, UsersModule, DatabaseModule],
+  imports: [
+    ConfigModule.forRoot({
+      /* Con esto podemos configurar diferentes ambientes de trabajo */
+      envFilePath: environments[process.env.NODE_ENV] || '.env',
+      load: [
+        config,
+      ] /* Para que nuestras variables de entornos tengan tipado seguro*/,
+      isGlobal:
+        true /* Para que los valores del archivo de configuración sean globales */,
+      validationSchema: Joi.object({
+        API_KEY: Joi.string().required(),
+        DATABASE_HOST: Joi.string().required(),
+        DATABASE_PORT: Joi.number().required(),
+      }) /* Con joi validamos que el archivo .env tenga todo lo que necesitamos */,
+    }),
+    ProductsModule,
+    UsersModule,
+    DatabaseModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

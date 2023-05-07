@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
 import { Product } from '../entities/product.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ProductsService {
@@ -16,7 +17,13 @@ export class ProductsService {
     },
   ];
 
+  constructor(
+    private configService: ConfigService /* Se inyecta acá para poder utilizar la configuración de .env */,
+  ) {}
+
   findAll() {
+    // El get se puede tipar para que no haya errores con los datos de configuración
+    console.log(this.configService.get<string>('DATABASE_HOST'));
     return this.products;
   }
 
