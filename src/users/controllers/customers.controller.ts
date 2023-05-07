@@ -15,7 +15,9 @@ import { Response } from 'express';
 import { ParseIntPipe } from 'src/common/parse-int/parse-int.pipe';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customers.dto';
 import { CustomersService } from '../services/customers.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('customers')
 @Controller('customers')
 export class CustomersController {
   // El service se inyecta en el controlador para ser utilizado

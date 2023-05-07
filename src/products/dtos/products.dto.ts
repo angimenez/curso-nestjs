@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType, ApiProperty } from '@nestjs/swagger';
+
+// Se utiliza el del plugin de swagger porque sino no documenta bien los updates
+// import { PartialType } from '@nestjs/mapped-types';
 import {
   IsString,
   IsNumber,
@@ -20,6 +23,10 @@ export class CreateProductDto {
   @IsNumber()
   @IsPositive()
   @IsNotEmpty()
+  @ApiProperty({
+    description: 'El precio debe ser un número',
+    example: 1950.4,
+  }) /* Ejemplo de documentación swagger */
   readonly price: number;
 
   @IsNumber()

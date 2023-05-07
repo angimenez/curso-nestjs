@@ -199,3 +199,33 @@ DATABASE_PORT: Joi.number().required(),
 }),
 ...
 
+## Documentación siguiendo el standard de OpenAPI.org
+
+(https://docs.nestjs.com/openapi/introduction)
+Para seguir el standard de open api nestjs nos proporciona una librería llamada swagger que nos va a permitir generar la documentación de forma automática. Para esto primero debemos instalar estos módulos:
+npm install --save @nestjs/swagger swagger-ui-express
+Debemos agregar unas líneas de código para configurar nuestro proyecto con swagger en main.ts:
+...
+const config = new DocumentBuilder()
+.setTitle('Platzi Store API')
+.setDescription('Platzi Store API description')
+.setVersion('1.0')
+.build();
+const document = SwaggerModule.createDocument(app, config);
+SwaggerModule.setup('docs', app, document);
+...
+Además, para que tome los dtos correctamente en la documentación, debemos modificar el archivo nest-cli.json y agregar el plugin del swagger en los compilerOptions, se puede ver algo así como esto:
+"compilerOptions": {
+"deleteOutDir": true,
+"plugins": ["@nestjs/swagger"]
+}
+
+Después debemos modificar los partial types para que los tome del paquete de swagger (sino no documento los updates):
+import { PartialType } from '@nestjs/swagger';
+
+## Mejorando la documentación de Swagger
+
+EL paquete de sagger para nest nos trae decoradores que nos permiten mejorar las descirpciones y la documnetación generada. Ahora vamos a ver algunos ejemplos, como agregar el decorador @ApiProperty({description:"Descripcion para una propiedad rebuscada"}).
+También en los controladores tenemos para agupar endpoints con (por ejemplo en products.controller):
+@ApiTags('products')
+Con el decorador @ApiOperation({ summary: 'Description' }) podemos documentar métodos en específico.

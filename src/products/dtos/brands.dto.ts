@@ -1,4 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
+// Se utiliza el del plugin de swagger porque sino no documenta bien los updates
+// import { PartialType } from '@nestjs/mapped-types';
 import { IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateBrandDto {

@@ -15,7 +15,9 @@ import { Response } from 'express';
 import { ParseIntPipe } from 'src/common/parse-int/parse-int.pipe';
 import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto';
 import { UsersService } from '../services/users.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   // El service se inyecta en el controlador para ser utilizado

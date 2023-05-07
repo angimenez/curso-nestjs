@@ -12,10 +12,13 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
+
 import { ParseIntPipe } from 'src/common/parse-int/parse-int.pipe';
 import { CreateBrandDto, UpdateBrandDto } from '../dtos/brands.dto';
 import { BrandsService } from '../services/brands.service';
 
+@ApiTags('brands')
 @Controller('brands')
 export class BrandsController {
   // El service se inyecta en el controlador para ser utilizado

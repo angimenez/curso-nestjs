@@ -13,10 +13,13 @@ import {
   // ParseIntPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { ProductsService } from '../services/products.service';
 import { ParseIntPipe } from '../../common/parse-int/parse-int.pipe';
 import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
 
+@ApiTags('products')
 @Controller('products')
 export class ProductsController {
   // El service se inyecta en el controlador para ser utilizado
@@ -31,6 +34,10 @@ export class ProductsController {
     return `Brand is ${brand}, Limit is ${limit} and offset is ${offset}`;
   }*/
   @Get()
+  @ApiOperation({
+    summary: 'Products list',
+    description: 'Hello, this is a documentation of product list method',
+  })
   get(
     @Query('limit') limit: number,
     @Query('offset') offset: number,

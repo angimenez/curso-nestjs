@@ -11,11 +11,14 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
 import { Response } from 'express';
 import { ParseIntPipe } from 'src/common/parse-int/parse-int.pipe';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dto';
 import { CategoriesService } from '../services/categories.service';
 
+@ApiTags('categories')
 @Controller('categories')
 export class CategoriesController {
   // El service se inyecta en el controlador para ser utilizado
