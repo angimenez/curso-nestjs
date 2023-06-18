@@ -25,6 +25,11 @@ export class AppController {
     return this.appService.getKiki();
   }
 
+  @Get('tasks')
+  getTasks() {
+    return this.appService.getTasks();
+  }
+
   // Para recibir parámetros
   @Get('/things/:id')
   getThings(@Param('id') id: string) {

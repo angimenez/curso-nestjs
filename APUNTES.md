@@ -175,6 +175,9 @@ constructor(
 ) {}
 ...
 
+ACLARACIÓN IMPORTANTE
+Siempre se debe inyectar la dependencia config.KEY, ya que sino no anda nada (es como un nombre genérico que tiene, entonces de esa forma accedemos correctamente sin contratiempos).
+
 ## Joi (validación de esquemas .envs)
 
 Se instala con el siguiente comando:
@@ -242,3 +245,28 @@ En el siguiente paso agregamos un archivo Procfile para que le indique con qué 
 
 // Agregamos el process.... para que si mandamos a Heroku (u otra) pueda iniciar con el puerto que nos dan
 await app.listen(process.env.PORT || 3000);
+
+
+# Instalando Docker
+Tuve que seguir el siguiente tutorial => https://docs.docker.com/engine/install/ubuntu/
+
+Para poder utilizar el docker-compose lo tuve que instalar a parte, ya que no aparecía como comando: 
+sudo apt install docker-compose
+
+Tampoco me anduvo el comando de compose sin el sudo, tuve que utilizar sudo:
+sudo docker-compose up -d nombreServicio
+
+Para bajar los servicios de docker-compose:
+sudo docker-compose down
+Para ver lo que se está ejecutando:
+sudo docker-compose ps
+Para volver a subirlo es el mismo comando:
+sudo docker-compose up -d mongo
+
+Importante!! Utilizar "docker compose" en lugar de "docker-compose". Ver info en => https://docs.docker.com/compose/migrate/
+
+# Comenzando a trabajar con MongoDB
+Instalo el driver de la base de datos oficial:
+npm install mongodb
+Luego instalo soporte para el tipado como dependencia de desarrollo:
+npm install @types/mongodb -D

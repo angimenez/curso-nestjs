@@ -36,3 +36,7 @@ lerna-debug.log*
 
 # Ignore env files
 *.env
+
+
+# Ignore mongo_data for docker
+/mongo_data

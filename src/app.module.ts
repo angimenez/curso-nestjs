@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { MongoClient } from 'mongodb';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -29,6 +30,13 @@ const API_KEY_PROD = 'KAKAKA FOR PRODUCTION';
         API_KEY: Joi.string().required(),
         DATABASE_HOST: Joi.string().required(),
         DATABASE_PORT: Joi.number().required(),
+        // Validamos datos de MongoDB
+        MONGO_INITDB_ROOT_USERNAME: Joi.string().required(),
+        MONGO_INITDB_ROOT_PASSWORD: Joi.string().required(),
+        MONGO_DB: Joi.string().required(),
+        MONGO_PORT: Joi.number().required(),
+        MONGO_HOST: Joi.string().required(),
+        MONGO_CONNECTION: Joi.string().required(),
       }) /* Con joi validamos que el archivo .env tenga todo lo que necesitamos */,
     }),
     ProductsModule,
